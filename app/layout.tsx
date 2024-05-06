@@ -1,8 +1,12 @@
+"use client";
 import type { Metadata } from "next";
 import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
 import AIChatBot from "@/components/AIChatBot";
 import Nav from "@/components/Nav";
+import { useEffect } from "react";
+import useProductsStore from "@/stores/products";
+import useMessagesStore from "@/stores/messages";
 
 const poppins = Poppins({
 	subsets: ["latin"],
@@ -16,16 +20,26 @@ const inter = Inter({
 	weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
-export const metadata: Metadata = {
-	title: "FreyaAI - Test Case",
-	description: "FreyaAI - Test Case",
-};
-
 export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const { setFavorites } = useProductsStore();
+	const { setMessages } = useMessagesStore();
+
+	useEffect(() => {
+		const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+		const messages = JSON.parse(localStorage.getItem("messages") || "[]");
+		if (favorites.length !== 0) {
+			setFavorites(favorites);
+		}
+
+		if (messages.length !== 0) {
+			setMessages(messages);
+		}
+	}, []);
+
 	return (
 		<html lang="tr">
 			<body className={poppins.variable + " " + inter.variable}>

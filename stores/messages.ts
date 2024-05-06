@@ -4,6 +4,7 @@ import create from 'zustand';
 interface MessagesStore {
     mobileMenuOpen: boolean;
     messages: Message[];
+    setMessages: (messages: Message[]) => void;
     sendMessage: (message: Message) => void;
     toggleMobileMenu: () => void;
 };
@@ -27,12 +28,11 @@ const botMessage = (messageId: number) => {
     return newMessage;
 }
 
-const initialMessages = JSON.parse(localStorage.getItem('messages') || '[]');
 
 const useMessagesStore = create<MessagesStore>((set) => ({
     mobileMenuOpen: false,
-    //if local storage is empty, set the default message to an empty array
-    messages: initialMessages.length === 0 ? [botMessage(0)] : initialMessages,
+    messages: [botMessage(0)],
+    setMessages: (messages) => set({ messages }),
     sendMessage: (message) => {
         set((state) => {
             const updatedMessages = [...state.messages, message];

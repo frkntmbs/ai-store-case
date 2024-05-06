@@ -7,6 +7,7 @@ interface ProductsState {
     favorites: number[];
     sortby: sortTypes;
     fetchProducts: () => void;
+    setFavorites: (favorites: number[]) => void;
     getFavorites: () => Product[];
     toggleFavorite: (productId: number) => void;
     sortProducts: (sort: sortTypes) => void;
@@ -14,7 +15,7 @@ interface ProductsState {
 
 const useProductsStore = create<ProductsState>((set) => ({
     products: [],
-    favorites: JSON.parse(localStorage.getItem("favorites") || "[]"),
+    favorites: [],
     sortby: "",
     fetchProducts: async () => {
         try {
@@ -36,6 +37,9 @@ const useProductsStore = create<ProductsState>((set) => ({
         } catch (error) {
             console.error('Error fetching products:', error);
         }
+    },
+    setFavorites: (favorites) => {
+        set({ favorites });
     },
     getFavorites: () => {
         let sortedProducts: Product[] = [];
