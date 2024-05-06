@@ -3,8 +3,10 @@ import ProductBox from "@/components/ProductBox";
 import useProductsStore from "@/stores/products";
 import { useEffect } from "react";
 
-export default function Home() {
-	const { products, fetchProducts } = useProductsStore();
+export default function Favorites() {
+	const { getFavorites, fetchProducts } = useProductsStore();
+
+	const favProducts = getFavorites();
 
 	useEffect(() => {
 		fetchProducts();
@@ -13,7 +15,7 @@ export default function Home() {
 	return (
 		<div className="w-full px-5">
 			<div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5">
-				{products?.map((product) => (
+				{favProducts?.map((product) => (
 					<ProductBox product={product} key={product.id} />
 				))}
 			</div>
